@@ -1,5 +1,5 @@
 const userModel=require('../models/userModel');
-const bcrypt=require('bcrypt');
+// const bcrypt=require('bcrypt');
 exports.registerController=async (req,res)=>{
     try {
         const {username , email, password}=req.body
@@ -17,9 +17,9 @@ if(exisitingUser)
         message:"Email already exists"
     });
 }
-const hashedPassword = await bcrypt.hash(password, 10);
+// const hashedPassword = await bcrypt.hash(password, 10);
 
-const user=new userModel({username,email,password:hashedPassword});
+const user=new userModel({username,email,password});
 await user.save();
    return res.status(201).send({
     success:true,
@@ -75,8 +75,8 @@ exports.loginController= async (req, res)=>{
                 success:false
             });
         }
-        const match= await bcrypt.compare(password, user.password);
-        if(!match){
+        // const match= await bcrypt.compare(password, user.password);
+        if(user.password !== password){
             return res.status(500).send({
                 message:"Invalid email or password",
                 success:false
